@@ -1,0 +1,112 @@
+<UserControl x:Class="Communication.Wpf.Views.CommunicationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="260"
+             d:DesignWidth="420">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HKVision.Wpf;component/Themes/HKVisionHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="CommunicationListenLogTextBoxStyle"
+                   TargetType="TextBox"
+                   BasedOn="{StaticResource VisionPropertyEditorTextBoxStyle}">
+                <Setter Property="Height" Value="132" />
+                <Setter Property="MinHeight" Value="132" />
+                <Setter Property="Padding" Value="8" />
+                <Setter Property="VerticalContentAlignment" Value="Top" />
+                <Setter Property="AcceptsReturn" Value="True" />
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+                <Setter Property="FontFamily" Value="Consolas" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Style="{StaticResource VisionPropertyPanelStyle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="104"
+                              SharedSizeGroup="VisionPropertyName" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Style="{StaticResource VisionPropertyLabelStyle}"
+                   Text="监听" />
+        <Grid Grid.Row="0"
+              Grid.Column="1"
+              Margin="0,2,6,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0"
+                     Margin="0,0,6,0"
+                     Style="{StaticResource VisionPropertyEditorTextBoxStyle}"
+                     Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Column="1"
+                    MinWidth="88"
+                    Command="{Binding StartListenCommand}"
+                    Content="开始监听"
+                    Style="{StaticResource VisionDenseButtonStyle}" />
+            <Button Grid.Column="2"
+                    MinWidth="88"
+                    Command="{Binding StopListenCommand}"
+                    Content="结束监听"
+                    Style="{StaticResource VisionDenseButtonStyle}" />
+        </Grid>
+
+        <TextBlock Grid.Row="1"
+                   Style="{StaticResource VisionPropertyLabelStyle}"
+                   Text="状态" />
+        <TextBox Grid.Row="1"
+                 Grid.Column="1"
+                 Style="{StaticResource VisionPropertyEditorTextBoxStyle}"
+                 IsReadOnly="True"
+                 Text="{Binding ListenStatusText, Mode=OneWay}" />
+
+        <TextBlock Grid.Row="2"
+                   Style="{StaticResource VisionPropertyLabelStyle}"
+                   Text="客户端" />
+        <TextBox Grid.Row="2"
+                 Grid.Column="1"
+                 Style="{StaticResource VisionPropertyEditorTextBoxStyle}"
+                 IsReadOnly="True"
+                 Text="{Binding ClientName}" />
+
+        <TextBlock Grid.Row="3"
+                   Style="{StaticResource VisionPropertyLabelStyle}"
+                   Text="日志" />
+        <Grid Grid.Row="3"
+              Grid.Column="1"
+              Margin="0,2,6,2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0"
+                     Style="{StaticResource CommunicationListenLogTextBoxStyle}"
+                     Text="{Binding LogText}" />
+            <Button Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    Margin="0,4,0,0"
+                    Command="{Binding ClearLogCommand}"
+                    Content="清空日志"
+                    Style="{StaticResource VisionDenseButtonStyle}" />
+        </Grid>
+    </Grid>
+</UserControl>

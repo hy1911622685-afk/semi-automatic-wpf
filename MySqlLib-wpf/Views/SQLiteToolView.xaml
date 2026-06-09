@@ -1,0 +1,42 @@
+<UserControl x:Class="MySqlLib.Wpf.Views.SQLiteToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MySqlLib.Wpf;component/Themes/MySqlHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border Padding="12"
+            Background="{StaticResource SqlPanelBrush}"
+            BorderBrush="{StaticResource SqlBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="6">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock FontSize="14"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource SqlTextBrush}"
+                       Text="数据库工具" />
+            <TextBox Grid.Row="1"
+                     Margin="0,8,0,8"
+                     Text="{Binding DatabasePath, UpdateSourceTrigger=PropertyChanged}" />
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Button Command="{Binding CheckDatabaseCommand}" Content="检查连接" />
+                <TextBlock Margin="12,0,0,0"
+                           VerticalAlignment="Center"
+                           Text="{Binding StatusText}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

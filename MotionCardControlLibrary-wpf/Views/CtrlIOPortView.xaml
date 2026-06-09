@@ -1,0 +1,345 @@
+<UserControl x:Class="MotionCard.Wpf.Views.CtrlIOPortView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MotionCard.Wpf;component/Themes/MotionCardHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="IoSystemSurfaceBrush" Color="#EEF3F8" />
+            <SolidColorBrush x:Key="IoSystemPanelBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="IoSystemHeaderBrush" Color="#1E5B84" />
+            <SolidColorBrush x:Key="IoSystemAccentBrush" Color="#1D6C9C" />
+            <SolidColorBrush x:Key="IoSystemAccentSoftBrush" Color="#E8F1F8" />
+            <SolidColorBrush x:Key="IoSystemBorderBrush" Color="#D7E0EA" />
+            <SolidColorBrush x:Key="IoSystemTextBrush" Color="#1F2A37" />
+            <SolidColorBrush x:Key="IoSystemTitleBrush" Color="#153047" />
+            <SolidColorBrush x:Key="IoSystemMutedTextBrush" Color="#6A7685" />
+            <SolidColorBrush x:Key="IoInputActiveBrush" Color="#168A64" />
+            <SolidColorBrush x:Key="IoInputSoftBrush" Color="#E7F5EF" />
+            <SolidColorBrush x:Key="IoOutputActiveBrush" Color="#D97706" />
+            <SolidColorBrush x:Key="IoOutputSoftBrush" Color="#FFF4DF" />
+            <SolidColorBrush x:Key="IoOffBrush" Color="#DDE6EF" />
+            <SolidColorBrush x:Key="IoDangerBrush" Color="#C24141" />
+            <SolidColorBrush x:Key="IoTabSurfaceBrush" Color="#F3F6FA" />
+            <SolidColorBrush x:Key="IoTabPanelBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="IoTabHeaderBrush" Color="#F8FBFD" />
+            <SolidColorBrush x:Key="IoTabBorderBrush" Color="#DCE3EE" />
+            <SolidColorBrush x:Key="IoTabTextBrush" Color="#222A35" />
+            <SolidColorBrush x:Key="IoTabMutedTextBrush" Color="#667386" />
+            <SolidColorBrush x:Key="IoTabAccentBrush" Color="#1F7A8C" />
+            <SolidColorBrush x:Key="IoTabHoverBrush" Color="#EAF4F7" />
+
+            <Style x:Key="IoLampButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="34" />
+                <Setter Property="Height" Value="34" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse x:Name="Outer"
+                                         Width="32"
+                                         Height="32"
+                                         Fill="#F8FBFD"
+                                         Stroke="{StaticResource IoSystemBorderBrush}"
+                                         StrokeThickness="1" />
+                                <Ellipse x:Name="Core"
+                                         Width="14"
+                                         Height="14"
+                                         Fill="{StaticResource IoOffBrush}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsInput}" Value="True" />
+                                        <Condition Binding="{Binding IsActive}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="Core" Property="Fill" Value="{StaticResource IoInputActiveBrush}" />
+                                    <Setter TargetName="Outer" Property="Fill" Value="{StaticResource IoInputSoftBrush}" />
+                                    <Setter TargetName="Outer" Property="Stroke" Value="{StaticResource IoInputActiveBrush}" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsOutput}" Value="True" />
+                                        <Condition Binding="{Binding IsActive}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="Core" Property="Fill" Value="{StaticResource IoOutputActiveBrush}" />
+                                    <Setter TargetName="Outer" Property="Fill" Value="{StaticResource IoOutputSoftBrush}" />
+                                    <Setter TargetName="Outer" Property="Stroke" Value="{StaticResource IoOutputActiveBrush}" />
+                                </MultiDataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Outer" Property="Stroke" Value="{StaticResource IoSystemAccentBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Outer" Property="Fill" Value="#E0EBF3" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <DataTemplate x:Key="IoPortTemplate">
+                <Border Width="106"
+                        Height="92"
+                        Margin="0,0,8,8"
+                        Background="{StaticResource IoSystemPanelBrush}"
+                        BorderBrush="{StaticResource IoSystemBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        SnapsToDevicePixels="True">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="22" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0"
+                                Background="#F7FAFD"
+                                BorderBrush="{StaticResource IoSystemBorderBrush}"
+                                BorderThickness="0,0,0,1"
+                                CornerRadius="6,6,0,0">
+                            <Grid Margin="8,0">
+                                <TextBlock HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Text="{Binding Header}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource IoInputActiveBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOutput}" Value="True">
+                                                    <Setter Property="Foreground" Value="{StaticResource IoOutputActiveBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <Border HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Padding="5,1"
+                                        Background="{StaticResource IoSystemAccentSoftBrush}"
+                                        CornerRadius="3">
+                                    <TextBlock FontSize="10"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource IoSystemAccentBrush}"
+                                               Text="{Binding StateText}" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Button Grid.Row="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding ToggleCommand}"
+                                Style="{StaticResource IoLampButtonStyle}"
+                                ToolTip="{Binding Content}" />
+
+                        <TextBlock Grid.Row="2"
+                                   Margin="6,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="11"
+                                   Foreground="{StaticResource IoSystemTextBrush}"
+                                   Text="{Binding Content}"
+                                   TextAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding Content}" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <Style x:Key="IoWrapItemsControlStyle" TargetType="ItemsControl">
+                <Setter Property="ItemTemplate" Value="{StaticResource IoPortTemplate}" />
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="IoSectionBorderStyle" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource IoSystemPanelBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource IoSystemBorderBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="Padding" Value="12" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+            </Style>
+
+            <Style x:Key="IoTabControlStyle" TargetType="TabControl">
+                <Setter Property="Background" Value="{StaticResource IoTabPanelBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource IoTabBorderBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabControl">
+                            <Grid KeyboardNavigation.TabNavigation="Local"
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Border Grid.Row="0"
+                                        Padding="4"
+                                        Background="{StaticResource IoTabHeaderBrush}"
+                                        BorderBrush="{StaticResource IoTabBorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="7">
+                                    <TabPanel x:Name="HeaderPanel"
+                                              IsItemsHost="True"
+                                              KeyboardNavigation.TabIndex="1" />
+                                </Border>
+
+                                <Border Grid.Row="1"
+                                        Margin="0,10,0,0"
+                                        Padding="{TemplateBinding Padding}"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="7">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="12"
+                                                          Direction="270"
+                                                          Opacity="0.07"
+                                                          ShadowDepth="1" />
+                                    </Border.Effect>
+                                    <ContentControl x:Name="PART_SelectedContentHost"
+                                                    HorizontalAlignment="Stretch"
+                                                    HorizontalContentAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    VerticalContentAlignment="Stretch"
+                                                    Content="{TemplateBinding SelectedContent}"
+                                                    ContentStringFormat="{TemplateBinding SelectedContentStringFormat}"
+                                                    ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                                                    ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="IoTabItemStyle" TargetType="TabItem">
+                <Setter Property="MinWidth" Value="104" />
+                <Setter Property="Height" Value="34" />
+                <Setter Property="Padding" Value="14,0" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Foreground" Value="{StaticResource IoTabMutedTextBrush}" />
+                <Setter Property="FontFamily" Value="Microsoft YaHei UI" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid SnapsToDevicePixels="True">
+                                <Border x:Name="TabChrome"
+                                        Margin="2,1,8,1"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        CornerRadius="5"
+                                        SnapsToDevicePixels="True">
+                                    <Grid>
+                                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          ContentSource="Header"
+                                                          RecognizesAccessKey="True"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        <Border x:Name="ActiveLine"
+                                                Height="3"
+                                                Margin="14,0,14,1"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="{StaticResource IoTabAccentBrush}"
+                                                CornerRadius="2"
+                                                Opacity="0" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="TabChrome" Property="Background" Value="{StaticResource IoTabHoverBrush}" />
+                                    <Setter Property="Foreground" Value="{StaticResource IoTabTextBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="TabChrome" Property="Background" Value="Transparent" />
+                                    <Setter TargetName="ActiveLine" Property="Opacity" Value="1" />
+                                    <Setter Property="Foreground" Value="{StaticResource IoTabAccentBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource IoSystemSurfaceBrush}">
+        <Grid Margin="5">
+            <TabControl Grid.Row="1"
+                        Background="Transparent"
+                        ItemContainerStyle="{StaticResource IoTabItemStyle}"
+                        ItemsSource="{Binding Boards}"
+                        Style="{StaticResource IoTabControlStyle}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel>
+                                <Expander Header="输入"
+                                          IsExpanded="True"
+                                          Style="{StaticResource MotionConfigExpanderStyle}">
+                                    <Border Padding="10"
+                                            Background="{StaticResource IoSystemPanelBrush}">
+                                        <ItemsControl ItemsSource="{Binding Inputs}"
+                                                      Style="{StaticResource IoWrapItemsControlStyle}" />
+                                    </Border>
+                                </Expander>
+
+                                <Expander Header="输出"
+                                          IsExpanded="True"
+                                          Style="{StaticResource MotionConfigExpanderStyle}">
+                                    <Border Padding="10"
+                                            Background="{StaticResource IoSystemPanelBrush}">
+                                        <ItemsControl ItemsSource="{Binding Outputs}"
+                                                      Style="{StaticResource IoWrapItemsControlStyle}" />
+                                    </Border>
+                                </Expander>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+        </Grid>
+    </Border>
+</UserControl>

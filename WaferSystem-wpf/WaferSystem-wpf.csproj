@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>WaferSystem.Wpf</RootNamespace>
+    <AssemblyName>WaferSystem.Wpf</AssemblyName>
+    <Deterministic>true</Deterministic>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>siradar32.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="HandyControl" Version="3.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Communication-wpf\Communication-wpf.csproj" />
+    <ProjectReference Include="..\HKVision-wpf\HKVision-wpf.csproj" />
+    <ProjectReference Include="..\MotionCardControlLibrary-wpf\MotionCardControlLibrary-wpf.csproj" />
+    <ProjectReference Include="..\MyAsset-wpf\MyAsset-wpf.csproj" />
+    <ProjectReference Include="..\MySqlLib-wpf\MySqlLib-wpf.csproj" />
+    <ProjectReference Include="..\WaferMapControlLibrary-wpf\WaferMapControlLibrary-wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\bg.jpg" />
+    <Content Include="..\轴错误停止原因.txt" Link="轴错误停止原因.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="siradar32.ico" />
+  </ItemGroup>
+</Project>

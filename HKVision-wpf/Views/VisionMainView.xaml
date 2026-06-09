@@ -1,0 +1,134 @@
+<UserControl x:Class="HKVision.Wpf.Views.VisionMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:HKVision.Wpf.Views"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HKVision.Wpf;component/Themes/HKVisionHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource VisionSurfaceBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="Auto" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition Height="*" />
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="Auto" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <views:VisionHeadView Grid.Row="0">
+            <views:VisionHeadView.Style>
+                <Style TargetType="views:VisionHeadView">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </views:VisionHeadView.Style>
+        </views:VisionHeadView>
+
+        <Border Grid.Row="1"
+                Margin="0,8,0,0"
+                Padding="0">
+            <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource VisionCardStyle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="CornerRadius" Value="0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <views:VmRenderHostControl x:Name="RenderHost" />
+        </Border>
+
+        <Border Grid.Row="2" Visibility="Collapsed"
+                Margin="10,0,10,10">
+            <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource VisionCardStyle}">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel>
+                <TextBlock Style="{StaticResource VisionSectionTitleStyle}"
+                           Text="视场渲染配置" />
+
+                <WrapPanel>
+                    <StackPanel Width="360"
+                                Margin="0,0,12,8">
+                        <TextBlock Style="{StaticResource VisionFieldLabelStyle}"
+                                   Text="方案路径" />
+                        <TextBox Text="{Binding SolutionPath, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <StackPanel Width="168"
+                                Margin="0,0,12,8">
+                        <TextBlock Style="{StaticResource VisionFieldLabelStyle}"
+                                   Text="流程" />
+                        <ComboBox ItemsSource="{Binding Processes}"
+                                  SelectedItem="{Binding SelectedProcessName, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <StackPanel Width="168"
+                                Margin="0,0,12,8">
+                        <TextBlock Style="{StaticResource VisionFieldLabelStyle}"
+                                   Text="模块" />
+                        <ComboBox ItemsSource="{Binding Modules}"
+                                  SelectedItem="{Binding SelectedModuleName, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </WrapPanel>
+
+                <WrapPanel Margin="0,4,0,0">
+                    <Button Style="{StaticResource VisionDenseButtonStyle}"
+                            Command="{Binding SelectSolutionCommand}"
+                            Content="选择方案" />
+                    <Button Style="{StaticResource VisionDenseButtonStyle}"
+                            Command="{Binding SaveCommand}"
+                            Content="保存方案" />
+                    <Button Style="{StaticResource VisionDenseButtonStyle}"
+                            Command="{Binding SingleRunCommand}"
+                            Content="执行" />
+                    <Button Style="{StaticResource VisionDenseButtonStyle}"
+                            Command="{Binding ConfigureParamCommand}"
+                            Content="参数配置" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

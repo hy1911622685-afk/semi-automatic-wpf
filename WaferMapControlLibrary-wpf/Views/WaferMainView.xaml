@@ -1,0 +1,76 @@
+<UserControl x:Class="WaferMap.Wpf.Views.WaferMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:scottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+             xmlns:viewModels="clr-namespace:WaferMap.Wpf.ViewModels;assembly=WaferMap.Wpf"
+             xmlns:views="clr-namespace:WaferMap.Wpf.Views"
+             d:DataContext="{d:DesignInstance Type=viewModels:WaferMainViewModel}"
+             d:DesignHeight="720"
+             d:DesignWidth="1180"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WaferMap.Wpf;component/Themes/WaferMapHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource WaferSurfaceBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="Auto" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                <Setter Property="Height" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <views:WaferHeadView Grid.Row="0">
+            <views:WaferHeadView.Style>
+                <Style TargetType="views:WaferHeadView">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </views:WaferHeadView.Style>
+        </views:WaferHeadView>
+
+        <Border Grid.Row="1"
+                Margin="0,8,0,0"
+                Padding="0">
+            <Border.Style>
+                <Style TargetType="Border" BasedOn="{StaticResource WaferCardStyle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCompact, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="CornerRadius" Value="0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <scottPlot:WpfPlot x:Name="PART_PlotView"
+                               Background="White"
+                               MouseLeftButtonDown="PlotView_MouseLeftButtonDown"
+                               MouseMove="PlotView_MouseMove"
+                               MouseWheel="PlotView_MouseWheel"
+                               PreviewMouseLeftButtonUp="PlotView_PreviewMouseLeftButtonUp"
+                               PreviewMouseRightButtonDown="PlotView_PreviewMouseRightButtonDown"
+                               PreviewMouseRightButtonUp="PlotView_PreviewMouseRightButtonUp" />
+        </Border>
+    </Grid>
+</UserControl>

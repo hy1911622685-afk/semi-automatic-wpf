@@ -1,0 +1,37 @@
+<UserControl x:Class="HKVision.Wpf.Views.VmRenderHostControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:VMControls.WPF.Release;assembly=VMControls.WPF.Release">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HKVision.Wpf;component/Themes/HKVisionHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="RootGrid" Background="#363C44" SizeChanged="RootGrid_SizeChanged">
+        <vm:VmRenderControl x:Name="RenderControl"
+                            Background="#363C44"
+                            CoordinateInfoVisible="False"
+                            IsShowCustomROIMenu="False" />
+        <Line x:Name="HorizontalLine"
+              Stroke="#F0A33A"
+              StrokeThickness="2"
+              X1="0"
+              X2="{Binding ActualWidth, ElementName=RootGrid}"
+              Y1="0"
+              Y2="0"
+              VerticalAlignment="Top"
+              IsHitTestVisible="False" />
+        <Line x:Name="VerticalLine"
+              Stroke="#F0A33A"
+              StrokeThickness="2"
+              X1="0"
+              X2="0"
+              Y1="0"
+              Y2="{Binding ActualHeight, ElementName=RootGrid}"
+              HorizontalAlignment="Center"
+              IsHitTestVisible="False" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,690 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:behaviors="clr-namespace:WaferSystem.Wpf.Behaviors"
+                    xmlns:converters="clr-namespace:WaferSystem.Wpf.Converters">
+    <SolidColorBrush x:Key="SystemSurfaceBrush" Color="#EEF3F8" />
+    <SolidColorBrush x:Key="SystemPanelBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="SystemHeaderBrush" Color="#F7FAFD" />
+    <SolidColorBrush x:Key="SystemTopBarBorderBrush" Color="#C8D8E6" />
+    <SolidColorBrush x:Key="SystemTopBarAccentBrush" Color="#0E7490" />
+    <SolidColorBrush x:Key="SystemTopStatusBrush" Color="#E8F6F7" />
+    <SolidColorBrush x:Key="SystemTopStatusBorderBrush" Color="#B9DDE4" />
+    <SolidColorBrush x:Key="SystemTopStatusTextBrush" Color="#28576A" />
+    <SolidColorBrush x:Key="SystemTopActionPanelBrush" Color="#EAF3F8" />
+    <SolidColorBrush x:Key="SystemTopActionPanelBorderBrush" Color="#C6D8E5" />
+    <SolidColorBrush x:Key="SystemTopActionButtonBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="SystemTopActionButtonHoverBrush" Color="#DFF1F4" />
+    <SolidColorBrush x:Key="SystemTopActionButtonPressedBrush" Color="#CBE7ED" />
+    <SolidColorBrush x:Key="SystemTitleBarButtonHoverBrush" Color="#D8EBF2" />
+    <SolidColorBrush x:Key="SystemTitleBarButtonPressedBrush" Color="#C2DCE8" />
+    <SolidColorBrush x:Key="SystemTitleBarCloseHoverBrush" Color="#E25353" />
+    <SolidColorBrush x:Key="SystemTitleBarClosePressedBrush" Color="#C24141" />
+    <SolidColorBrush x:Key="SystemTopCloseButtonHoverBrush" Color="#FBE7E7" />
+    <SolidColorBrush x:Key="SystemTopCloseButtonPressedBrush" Color="#F4CCCC" />
+    <SolidColorBrush x:Key="SystemHeaderAltBrush" Color="#1E5B84" />
+    <SolidColorBrush x:Key="SystemBorderBrush" Color="#D7E0EA" />
+    <SolidColorBrush x:Key="SystemTextBrush" Color="#1F2A37" />
+    <SolidColorBrush x:Key="SystemMutedTextBrush" Color="#6A7685" />
+    <SolidColorBrush x:Key="SystemAccentBrush" Color="#1D6C9C" />
+    <SolidColorBrush x:Key="SystemAccentHoverBrush" Color="#2A7FB3" />
+    <SolidColorBrush x:Key="SystemDangerBrush" Color="#C24141" />
+    <SolidColorBrush x:Key="SystemWarningBrush" Color="#F59E0B" />
+    <SolidColorBrush x:Key="SystemNavHoverBrush" Color="#E8F1F8" />
+    <SolidColorBrush x:Key="SystemTitleBrush" Color="#153047" />
+    <SolidColorBrush x:Key="SystemHeaderCardBrush" Color="#EDF4FA" />
+    <SolidColorBrush x:Key="SystemHeaderCardBorderBrush" Color="#D2DEE9" />
+    <SolidColorBrush x:Key="SystemIconButtonHoverBrush" Color="#DCE9F5" />
+    <SolidColorBrush x:Key="SystemIconButtonPressedBrush" Color="#C9DCEE" />
+    <SolidColorBrush x:Key="SystemCloseButtonHoverBrush" Color="#E25353" />
+    <SolidColorBrush x:Key="SystemCloseButtonPressedBrush" Color="#C24141" />
+    <LinearGradientBrush x:Key="SystemWindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Offset="0" Color="#F8FBFE" />
+        <GradientStop Offset="1" Color="#E9F0F7" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="SystemTopBarBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Offset="0" Color="#F9FCFD" />
+        <GradientStop Offset="0.5" Color="#EEF7F8" />
+        <GradientStop Offset="1" Color="#E6F0F6" />
+    </LinearGradientBrush>
+
+    <Style x:Key="SystemCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SystemPanelBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="12" Direction="270" Opacity="0.08" ShadowDepth="1" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemSectionTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTextBrush}" />
+    </Style>
+
+    <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
+
+    <Style x:Key="SystemControlExpanderStyle"
+           TargetType="Expander"
+           BasedOn="{StaticResource Expander.Small}">
+        <Setter Property="IsExpanded" Value="True" />
+        <Setter Property="Margin" Value="0,0,0,10" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="{StaticResource SystemPanelBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock FontWeight="SemiBold"
+                               Foreground="{StaticResource SystemTextBrush}"
+                               Text="{Binding}" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemFieldLabelStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{StaticResource SystemMutedTextBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,6,0" />
+    </Style>
+
+    <Style TargetType="TextBox">
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTextBrush}" />
+        <Setter Property="CaretBrush" Value="{StaticResource SystemAccentBrush}" />
+        <Setter Property="SelectionBrush" Value="#A9DDE7" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Margin="{TemplateBinding Padding}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="#AEBCCE" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource SystemAccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemButtonBaseStyle" TargetType="Button">
+        <Setter Property="MinWidth" Value="82" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="Padding" Value="14,0" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
+        <Setter Property="Margin" Value="4,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTextBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemNavHoverBrush}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="#9AB8C2" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="#D8EEF3" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource SystemAccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" BasedOn="{StaticResource SystemButtonBaseStyle}" />
+
+    <Style x:Key="SystemPrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemButtonBaseStyle}">
+        <Setter Property="Background" Value="{StaticResource SystemAccentBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemAccentBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Key="SystemWarningButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemButtonBaseStyle}">
+        <Setter Property="Background" Value="{StaticResource SystemWarningBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemWarningBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Key="SystemDangerButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemButtonBaseStyle}">
+        <Setter Property="Background" Value="{StaticResource SystemDangerBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemDangerBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Key="SystemNavButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemButtonBaseStyle}">
+        <Setter Property="MinWidth" Value="88" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Margin" Value="0,0,8,0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="#4B5E7D" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style x:Key="SystemTopActionButtonStyle" TargetType="Button">
+        <Setter Property="MinWidth" Value="88" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="Padding" Value="11,0" />
+        <Setter Property="Margin" Value="6,0,0,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="{StaticResource SystemTopActionButtonBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SystemTopActionPanelBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTitleBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTopActionButtonHoverBrush}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource SystemTopBarAccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTopActionButtonPressedBrush}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource SystemTopBarAccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemTopCloseActionButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemTopActionButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource SystemDangerBrush}" />
+        <Setter Property="BorderBrush" Value="#E8C5C5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTopCloseButtonHoverBrush}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="#DD8F8F" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTopCloseButtonPressedBrush}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource SystemDangerBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemTitleBarButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTitleBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTitleBarButtonHoverBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTitleBarButtonPressedBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemTitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemTitleBarButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource SystemDangerBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTitleBarCloseHoverBrush}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemTitleBarClosePressedBrush}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemIconButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="34" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="Margin" Value="4,0,0,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTitleBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="10">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemIconButtonHoverBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemIconButtonPressedBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SystemCloseIconButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemIconButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource SystemDangerBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="10">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemCloseButtonHoverBrush}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource SystemCloseButtonPressedBrush}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TabControl">
+        <Setter Property="Background" Value="{StaticResource SystemSurfaceBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style TargetType="TabItem">
+        <Setter Property="MinWidth" Value="88" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTextBrush}" />
+    </Style>
+
+    <Color x:Key="PageBgColor">#FFEEF3F8</Color>
+    <Color x:Key="PrimaryBlueColor">#FF1D6C9C</Color>
+    <SolidColorBrush x:Key="PageBgBrush" Color="{StaticResource PageBgColor}" />
+    <SolidColorBrush x:Key="PrimaryBlueBrush" Color="{StaticResource PrimaryBlueColor}" />
+    <SolidColorBrush x:Key="LightBlueBrush" Color="#FF2A7FB3" />
+    <SolidColorBrush x:Key="PaleBlueBrush" Color="#FF77B7D4" />
+    <SolidColorBrush x:Key="TextWhiteBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="TextBlue200Brush" Color="#FFDDEEF7" />
+    <SolidColorBrush x:Key="TextBlue300Brush" Color="#FFB9DDE4" />
+    <SolidColorBrush x:Key="TextLabelBrush" Color="#FF435468" />
+    <SolidColorBrush x:Key="TextSubBrush" Color="#FF6A7685" />
+    <SolidColorBrush x:Key="TextWeakBrush" Color="#FF7D93AD" />
+    <SolidColorBrush x:Key="TextDimBrush" Color="#FF6B7A8D" />
+    <SolidColorBrush x:Key="TextBodyBrush" Color="#FFB0C4DE" />
+    <SolidColorBrush x:Key="PlaceholderBrush" Color="#FF9AA8B8" />
+    <SolidColorBrush x:Key="SeparatorBrush" Color="#FF9DB0C1" />
+    <SolidColorBrush x:Key="InputBgBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="InputBorderBrush" Color="#FFC8D8E6" />
+    <SolidColorBrush x:Key="InputFocusBgBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="InputFocusBorderBrush" Color="#FF1D6C9C" />
+    <LinearGradientBrush x:Key="LoginButtonBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF1D6C9C" Offset="0" />
+        <GradientStop Color="#FF0E7490" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LoginButtonHoverBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF2A7FB3" Offset="0" />
+        <GradientStop Color="#FF1597A8" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LoginButtonPressedBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF15577F" Offset="0" />
+        <GradientStop Color="#FF0F5F73" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LogoGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF1D6C9C" Offset="0" />
+        <GradientStop Color="#FF0E7490" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="TitleGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FFFFFFFF" Offset="0" />
+        <GradientStop Color="#FF93C5FD" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LeftOverlayHorizontalBrush" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Color="#F2153047" Offset="0" />
+        <GradientStop Color="#C21E5B84" Offset="0.48" />
+        <GradientStop Color="#E8153047" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="LeftOverlayVerticalBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#8A153047" Offset="0" />
+        <GradientStop Color="#221D6C9C" Offset="0.4" />
+        <GradientStop Color="#D9153047" Offset="1" />
+    </LinearGradientBrush>
+    <RadialGradientBrush x:Key="AmbientGlowBlueBrush">
+        <GradientStop Color="#1D6C9C" Offset="0" />
+        <GradientStop Color="Transparent" Offset="0.7" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="AmbientGlowCyanBrush">
+        <GradientStop Color="#0E7490" Offset="0" />
+        <GradientStop Color="Transparent" Offset="0.7" />
+    </RadialGradientBrush>
+
+    <Style x:Key="LoginTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Height" Value="48" />
+        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTextBrush}" />
+        <Setter Property="CaretBrush" Value="{StaticResource SystemAccentBrush}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="border" Background="{StaticResource InputBgBrush}" BorderBrush="{StaticResource InputBorderBrush}" BorderThickness="1" CornerRadius="12">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                            <TextBlock x:Name="placeholder" Text="{TemplateBinding Tag}" Foreground="{StaticResource PlaceholderBrush}" Margin="18,0,0,0" VerticalAlignment="Center" FontSize="14" IsHitTestVisible="False" Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="placeholder" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter TargetName="placeholder" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource InputFocusBorderBrush}" />
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource InputFocusBgBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="LoginPasswordTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource LoginTextBoxStyle}">
+        <Setter Property="Padding" Value="16,0,48,0" />
+    </Style>
+    <Style x:Key="LoginPasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Height" Value="48" />
+        <Setter Property="Padding" Value="16,0,48,0" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType" />
+        <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
+        <Setter Property="Foreground" Value="{StaticResource SystemTextBrush}" />
+        <Setter Property="CaretBrush" Value="{StaticResource SystemAccentBrush}" />
+        <Setter Property="Tag" Value="请输入密码" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border x:Name="border" Background="{StaticResource InputBgBrush}" BorderBrush="{StaticResource InputBorderBrush}" BorderThickness="1" CornerRadius="12">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                            <TextBlock x:Name="placeholder" Text="{TemplateBinding Tag}" Foreground="{StaticResource PlaceholderBrush}" Margin="18,0,0,0" VerticalAlignment="Center" FontSize="14" IsHitTestVisible="False" Visibility="Visible" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource InputFocusBorderBrush}" />
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource InputFocusBgBrush}" />
+                        </Trigger>
+                        <Trigger Property="behaviors:PasswordBoxAssistant.HasPassword" Value="True">
+                            <Setter TargetName="placeholder" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="LoginCheckBoxStyle" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource TextSubBrush}" />
+        <Setter Property="FontSize" Value="12.8" />
+    </Style>
+    <Style x:Key="LinkButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource LightBlueBrush}" />
+        <Setter Property="FontSize" Value="12.8" />
+    </Style>
+    <Style x:Key="LoginButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="48" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{StaticResource LoginButtonBrush}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="12"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LoginButtonHoverBrush}" />
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#1D6C9C" BlurRadius="22" ShadowDepth="0" Opacity="0.28" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LoginButtonPressedBrush}" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.985" ScaleY="0.985" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#0E7490" BlurRadius="12" ShadowDepth="0" Opacity="0.22" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter TargetName="border" Property="Opacity" Value="0.86" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="EyeToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
+    </Style>
+    <Style x:Key="HelpButtonStyle" TargetType="Button" BasedOn="{StaticResource LinkButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource TextWeakBrush}" />
+        <Setter Property="FontSize" Value="12.5" />
+    </Style>
+    <Style x:Key="LeftPanelSubtitleStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextBlue200Brush}" />
+        <Setter Property="FontSize" Value="12.5" />
+    </Style>
+    <Style x:Key="LeftPanelBodyStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextBodyBrush}" />
+        <Setter Property="FontSize" Value="14.1" />
+        <Setter Property="LineHeight" Value="26" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="FormLabelStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextLabelBrush}" />
+        <Setter Property="FontSize" Value="12.8" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
+    <Style x:Key="FooterTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextWeakBrush}" />
+        <Setter Property="FontSize" Value="11.5" />
+    </Style>
+    <Style x:Key="VersionTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextDimBrush}" />
+        <Setter Property="FontSize" Value="11.2" />
+    </Style>
+    <Style x:Key="CertTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextWeakBrush}" />
+        <Setter Property="FontSize" Value="11.2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="LoginWindowButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemTitleBarButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource SystemTitleBrush}" />
+    </Style>
+    <Style x:Key="LoginWindowCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource SystemTitleBarCloseButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource SystemDangerBrush}" />
+    </Style>
+</ResourceDictionary>

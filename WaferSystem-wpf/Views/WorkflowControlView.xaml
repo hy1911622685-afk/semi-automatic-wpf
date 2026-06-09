@@ -1,0 +1,65 @@
+<UserControl x:Class="WaferSystem.Wpf.Views.WorkflowControlView"
+             x:Name="Root"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:comm="clr-namespace:Communication.Wpf.Views;assembly=Communication.Wpf">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HKVision.Wpf;component/Themes/HKVisionHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer Background="{StaticResource VisionSurfaceBrush}"
+                  Padding="5"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel Grid.IsSharedSizeScope="True"
+                    HorizontalAlignment="Stretch">
+            <Expander Header="流程控制"
+                      IsExpanded="True"
+                      Style="{StaticResource VisionPropertyCategoryStyle}">
+                <Grid Style="{StaticResource VisionPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104"
+                                          SharedSizeGroup="VisionPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Style="{StaticResource VisionPropertyLabelStyle}"
+                               Text="操作" />
+                    <UniformGrid Grid.Row="0"
+                                 Grid.Column="1"
+                                 Columns="2"
+                                 Margin="0,2,6,2">
+                        <Button Command="{Binding StartWorkflowCommand}"
+                                Content="开始"
+                                Style="{StaticResource VisionDenseButtonStyle}" />
+                        <Button Command="{Binding ResumeWorkflowCommand}"
+                                Content="继续"
+                                Style="{StaticResource VisionDenseButtonStyle}" />
+                        <Button Command="{Binding PauseWorkflowCommand}"
+                                Content="暂停"
+                                Style="{StaticResource VisionDenseButtonStyle}" />
+                        <Button Command="{Binding StopWorkflowCommand}"
+                                Content="停止"
+                                Style="{StaticResource VisionDenseButtonStyle}" />
+                    </UniformGrid>
+                </Grid>
+            </Expander>
+
+            <Expander Header="通讯监听"
+                      IsExpanded="True"
+                      Style="{StaticResource VisionPropertyCategoryStyle}">
+                <comm:CommunicationView x:Name="CommunicationViewHost"
+                                        CommandBinder="{Binding DataContext.SocketCommandBinder, ElementName=Root}"
+                                        DeviceConnectedAction="{Binding DataContext.SocketDeviceConnectedAction, ElementName=Root}"
+                                        DeviceDisconnectedAction="{Binding DataContext.SocketDeviceDisconnectedAction, ElementName=Root}" />
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,132 @@
+<UserControl x:Class="MotionCard.Wpf.Views.CtrlPositionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MotionCard.Wpf;component/Themes/MotionCardHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="MotionAxisXBrush" Color="#1F7A8C" />
+            <SolidColorBrush x:Key="MotionAxisYBrush" Color="#2563EB" />
+            <SolidColorBrush x:Key="MotionAxisZBrush" Color="#0F9F8F" />
+            <SolidColorBrush x:Key="MotionAxisTBrush" Color="#D97706" />
+            <SolidColorBrush x:Key="MotionPositionHeaderTextBrush" Color="#5C6B7D" />
+            <SolidColorBrush x:Key="MotionPositionCardBrush" Color="#F8FBFD" />
+            <SolidColorBrush x:Key="MotionStatusAxisCardBrush" Color="#F4FAFC" />
+
+            <Style x:Key="MotionCompactAxisCardStyle" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource MotionStatusAxisCardBrush}" />
+                <Setter Property="BorderBrush" Value="#7EAEB8" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="Padding" Value="8,3" />
+                <Setter Property="Margin" Value="0,0,6,0" />
+            </Style>
+
+            <Style x:Key="MotionCompactAxisValueStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Consolas" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="{StaticResource MotionTextBrush}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="MinWidth" Value="72" />
+                <Setter Property="TextAlignment" Value="Right" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Horizontal"
+                VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center">
+            <Border Width="7"
+                    Height="7"
+                    Margin="0,0,5,0"
+                    Background="{StaticResource MotionContinuousAccentBrush}"
+                    CornerRadius="4" />
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       Foreground="White"
+                       Text="轴位置" />
+        </StackPanel>
+
+        <Border Style="{StaticResource MotionCompactAxisCardStyle}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="11"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource MotionAxisXBrush}"
+                           Text="X" />
+                <TextBlock x:Name="AxisXPositionText"
+                           Margin="5,0,0,0"
+                           Style="{StaticResource MotionCompactAxisValueStyle}"
+                           Text="0.000" />
+                <TextBlock Margin="4,1,0,0"
+                           VerticalAlignment="Center"
+                           FontSize="10"
+                           Foreground="{StaticResource MotionMutedTextBrush}"
+                           Text="mm" />
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource MotionCompactAxisCardStyle}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="11"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource MotionAxisYBrush}"
+                           Text="Y" />
+                <TextBlock x:Name="AxisYPositionText"
+                           Margin="5,0,0,0"
+                           Style="{StaticResource MotionCompactAxisValueStyle}"
+                           Text="0.000" />
+                <TextBlock Margin="4,1,0,0"
+                           VerticalAlignment="Center"
+                           FontSize="10"
+                           Foreground="{StaticResource MotionMutedTextBrush}"
+                           Text="mm" />
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource MotionCompactAxisCardStyle}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="11"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource MotionAxisZBrush}"
+                           Text="Z" />
+                <TextBlock x:Name="AxisZPositionText"
+                           Margin="5,0,0,0"
+                           Style="{StaticResource MotionCompactAxisValueStyle}"
+                           Text="0.000" />
+                <TextBlock Margin="4,1,0,0"
+                           VerticalAlignment="Center"
+                           FontSize="10"
+                           Foreground="{StaticResource MotionMutedTextBrush}"
+                           Text="mm" />
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource MotionCompactAxisCardStyle}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="11"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource MotionAxisTBrush}"
+                           Text="T" />
+                <TextBlock x:Name="AxisTPositionText"
+                           Margin="5,0,0,0"
+                           Style="{StaticResource MotionCompactAxisValueStyle}"
+                           Text="0.000" />
+                <TextBlock Margin="4,1,0,0"
+                           VerticalAlignment="Center"
+                           FontSize="10"
+                           Foreground="{StaticResource MotionMutedTextBrush}"
+                           Text="deg" />
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

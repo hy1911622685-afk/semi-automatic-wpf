@@ -1,0 +1,34 @@
+<Window x:Class="HKVision.Wpf.Views.ParamConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:VMControls.WPF.Release;assembly=VMControls.WPF.Release"
+        mc:Ignorable="d"
+        Title="模块参数设置"
+        Height="640"
+        Width="920"
+        MinHeight="520"
+        MinWidth="760"
+        WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HKVision.Wpf;component/Themes/HKVisionHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource VisionSurfaceBrush}">
+        <Border Margin="12"
+                Background="{StaticResource VisionPanelBrush}"
+                BorderBrush="{StaticResource VisionBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="6">
+            <vm:VmParamsConfigWithRenderControl x:Name="ParamConfigControl"
+                                                CoordinateInfoVisible="False"
+                                                MultiImageButtonVisible="False"
+                                                ROIVisible="True" />
+        </Border>
+    </Grid>
+</Window>

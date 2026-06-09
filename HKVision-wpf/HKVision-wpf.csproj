@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>HKVision.Wpf</RootNamespace>
+    <AssemblyName>HKVision.Wpf</AssemblyName>
+    <Deterministic>true</Deterministic>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="HandyControl" Version="3.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyAsset-wpf\MyAsset-wpf.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IMVSFastFeatureMatchModuCs">
+      <HintPath>myLibs\IMVSFastFeatureMatchModuCs.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="MvCameraControl.Net">
+      <HintPath>myLibs\MvCameraControl.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Core">
+      <HintPath>myLibs\VM.Core.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="VM.PlatformSDKCS">
+      <HintPath>myLibs\VM.PlatformSDKCS.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="VM.Xml">
+      <HintPath>myLibs\VM.Xml.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="VMControls.BaseInterface">
+      <HintPath>myLibs\VMControls.BaseInterface.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="VMControls.Interface">
+      <HintPath>myLibs\VMControls.Interface.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="VMControls.RenderInterface">
+      <HintPath>myLibs\VMControls.RenderInterface.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="VMControls.WPF">
+      <HintPath>myLibs\VMControls.WPF.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="VMControls.WPF.Release">
+      <HintPath>myLibs\VMControls.WPF.Release.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="WPFBase">
+      <HintPath>myLibs\WPFBase.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,257 @@
+<UserControl x:Class="HKVision.Wpf.Views.VisionConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HKVision.Wpf;component/Themes/HKVisionHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="VisionSelectedDenseButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource VisionDenseButtonStyle}">
+                <Setter Property="Background" Value="{StaticResource VisionButtonBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource VisionBorderBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource VisionTextBrush}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="PART_Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5"
+                                    SnapsToDevicePixels="True">
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  RecognizesAccessKey="True" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource VisionButtonHoverBrush}" />
+                                    <Setter TargetName="PART_Border" Property="BorderBrush" Value="#9BB9C3" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource VisionButtonPressedBrush}" />
+                                    <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource VisionAccentBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource VisionAccentBrush}" />
+                                </Trigger>
+                                <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <DataTrigger.Value>
+                                        <sys:Boolean>True</sys:Boolean>
+                                    </DataTrigger.Value>
+                                    <Setter TargetName="PART_Border" Property="Background" Value="{StaticResource VisionAccentBrush}" />
+                                    <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource VisionAccentBrush}" />
+                                </DataTrigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}">
+                        <DataTrigger.Value>
+                            <sys:Boolean>True</sys:Boolean>
+                        </DataTrigger.Value>
+                        <Setter Property="Background" Value="{StaticResource VisionAccentBrush}" />
+                        <Setter Property="BorderBrush" Value="{StaticResource VisionAccentBrush}" />
+                        <Setter Property="Foreground" Value="White" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer Background="{StaticResource VisionSurfaceBrush}"
+                  Padding="5"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel Grid.IsSharedSizeScope="True"
+                    HorizontalAlignment="Stretch">
+            <Expander Header="参数设置" Style="{StaticResource VisionPropertyCategoryStyle}">
+                <Grid Style="{StaticResource VisionPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104" SharedSizeGroup="VisionPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource VisionPropertyLabelStyle}" Text="图像源" />
+                    <Button Grid.Row="0"
+                            Grid.Column="1"
+                            Style="{StaticResource VisionPropertyButtonStyle}"
+                            Command="{Binding ConfigureImageSourceCommand}"
+                            Content="加载图像源" />
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource VisionPropertyLabelStyle}" Text="匹配模块" />
+                    <Button Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource VisionPropertyButtonStyle}"
+                            Command="{Binding ConfigureMatchModuleCommand}"
+                            Content="加载匹配模块" />
+                </Grid>
+            </Expander>
+
+            <Expander Header="仿射标定" Style="{StaticResource VisionPropertyCategoryStyle}">
+                <Grid Style="{StaticResource VisionPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104" SharedSizeGroup="VisionPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource VisionPropertyLabelStyle}" Text="状态" />
+                    <CheckBox Grid.Row="0"
+                              Grid.Column="1"
+                              Style="{StaticResource VisionPropertyCheckBoxStyle}"
+                              IsChecked="{Binding CalibrationEnabled}"
+                              Content="启用仿射标定" />
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource VisionPropertyLabelStyle}" Text="X比例" />
+                    <TextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Style="{StaticResource VisionPropertyEditorTextBoxStyle}"
+                             IsReadOnly="True"
+                             Text="{Binding CalibrateRatioX}" />
+
+                    <TextBlock Grid.Row="2" Style="{StaticResource VisionPropertyLabelStyle}" Text="Y比例" />
+                    <TextBox Grid.Row="2"
+                             Grid.Column="1"
+                             Style="{StaticResource VisionPropertyEditorTextBoxStyle}"
+                             IsReadOnly="True"
+                             Text="{Binding CalibrateRatioY}" />
+
+                    <TextBlock Grid.Row="3" Style="{StaticResource VisionPropertyLabelStyle}" Text="标定点" />
+                    <UniformGrid Grid.Row="3"
+                                 Grid.Column="1"
+                                 Columns="3"
+                                 IsEnabled="{Binding CalibrationEnabled}"
+                                 Margin="0,2,6,2">
+                        <Button Style="{StaticResource VisionSelectedDenseButtonStyle}"
+                                Tag="{Binding HasCalibratePoint1}"
+                                Command="{Binding CalibratePoint1Command}"
+                                Content="第1点" />
+                        <Button Style="{StaticResource VisionSelectedDenseButtonStyle}"
+                                Tag="{Binding HasCalibratePoint2}"
+                                Command="{Binding CalibratePoint2Command}"
+                                Content="第2点" />
+                        <Button Style="{StaticResource VisionDenseButtonStyle}"
+                                Command="{Binding CalibrateCommand}"
+                                Content="标定" />
+                    </UniformGrid>
+                </Grid>
+            </Expander>
+
+            <Expander Header="Die尺寸扫描" Style="{StaticResource VisionPropertyCategoryStyle}">
+                <Grid Style="{StaticResource VisionPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104" SharedSizeGroup="VisionPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource VisionPropertyLabelStyle}" Text="扫描操作" />
+                    <UniformGrid Grid.Row="0"
+                                 Grid.Column="1"
+                                 Columns="2"
+                                 Margin="0,2,6,2">
+                        <Button Style="{StaticResource VisionDenseButtonStyle}"
+                                Command="{Binding ScanDieWidthCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="扫描宽度" />
+                                <TextBlock Margin="6,0,0,0"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Text="→" />
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource VisionDenseButtonStyle}"
+                                Command="{Binding ScanDieHeightCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="扫描高度" />
+                                <TextBlock Margin="6,0,0,0"
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Text="↓" />
+                            </StackPanel>
+                        </Button>
+                    </UniformGrid>
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource VisionPropertyLabelStyle}" Text="Die宽度" />
+                    <TextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Style="{StaticResource VisionPropertyEditorTextBoxStyle}"
+                             IsReadOnly="True"
+                             Text="{Binding ScannedDieWidth}" />
+
+                    <TextBlock Grid.Row="2" Style="{StaticResource VisionPropertyLabelStyle}" Text="Die高度" />
+                    <TextBox Grid.Row="2"
+                             Grid.Column="1"
+                             Style="{StaticResource VisionPropertyEditorTextBoxStyle}"
+                             IsReadOnly="True"
+                             Text="{Binding ScannedDieHeight}" />
+                </Grid>
+            </Expander>
+
+            <Expander Header="两点找平" Style="{StaticResource VisionPropertyCategoryStyle}">
+                <Grid Style="{StaticResource VisionPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104" SharedSizeGroup="VisionPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource VisionPropertyLabelStyle}" Text="状态" />
+                    <CheckBox Grid.Row="0"
+                              Grid.Column="1"
+                              Style="{StaticResource VisionPropertyCheckBoxStyle}"
+                              IsChecked="{Binding LevelingEnabled}"
+                              Content="启用两点找平" />
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource VisionPropertyLabelStyle}" Text="找平点" />
+                    <UniformGrid Grid.Row="1"
+                                 Grid.Column="1"
+                                 Columns="3"
+                                 IsEnabled="{Binding LevelingEnabled}"
+                                 Margin="0,2,6,2">
+                        <Button Style="{StaticResource VisionSelectedDenseButtonStyle}"
+                                Tag="{Binding HasLevelingPoint1}"
+                                Command="{Binding LevelingPoint1Command}"
+                                Content="第1点" />
+                        <Button Style="{StaticResource VisionSelectedDenseButtonStyle}"
+                                Tag="{Binding HasLevelingPoint2}"
+                                Command="{Binding LevelingPoint2Command}"
+                                Content="第2点" />
+                        <Button Style="{StaticResource VisionDenseButtonStyle}"
+                                Command="{Binding LevelingCommand}"
+                                Content="找平" />
+                    </UniformGrid>
+                </Grid>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,124 @@
+<UserControl x:Class="WaferMap.Wpf.Views.WaferConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WaferMap.Wpf;component/Themes/WaferMapHandyTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer Padding="5"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel Grid.IsSharedSizeScope="True"
+                    HorizontalAlignment="Stretch">
+            <Expander Header="布局" Style="{StaticResource WaferPropertyCategoryStyle}">
+                <Grid Style="{StaticResource WaferPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104" SharedSizeGroup="WaferPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource WaferPropertyLabelStyle}" Text="晶圆类型" />
+                    <ComboBox Grid.Row="0" Grid.Column="1" Style="{StaticResource WaferPropertyEditorComboBoxStyle}" ItemsSource="{Binding MapTypes}" SelectedItem="{Binding DataModel.MapType}" />
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource WaferPropertyLabelStyle}" Text="缺口方向" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource WaferPropertyEditorComboBoxStyle}" ItemsSource="{Binding GapDirections}" SelectedItem="{Binding DataModel.GapAngle}" />
+
+                    <TextBlock Grid.Row="2" Style="{StaticResource WaferPropertyLabelStyle}" Text="晶圆尺寸" />
+                    <hc:NumericUpDown Grid.Row="2" Grid.Column="1" Style="{StaticResource WaferNumericStyle}" DecimalPlaces="0" Increment="1" Minimum="1" Value="{Binding DataModel.WaferSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="3" Style="{StaticResource WaferPropertyLabelStyle}" Text="缺口深度" />
+                    <hc:NumericUpDown Grid.Row="3" Grid.Column="1" Style="{StaticResource WaferNumericStyle}" DecimalPlaces="0" Increment="1" Minimum="0" Value="{Binding DataModel.GapDepth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="4" Style="{StaticResource WaferPropertyLabelStyle}" Text="器件宽度" />
+                    <hc:NumericUpDown Grid.Row="4" Grid.Column="1" Style="{StaticResource WaferNumericStyle}" Value="{Binding DataModel.DieWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="5" Style="{StaticResource WaferPropertyLabelStyle}" Text="器件高度" />
+                    <hc:NumericUpDown Grid.Row="5" Grid.Column="1" Style="{StaticResource WaferNumericStyle}" Value="{Binding DataModel.DieHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="6" Style="{StaticResource WaferPropertyLabelStyle}" Text="间距X" />
+                    <hc:NumericUpDown Grid.Row="6" Grid.Column="1" Style="{StaticResource WaferNumericStyle}" Minimum="0" Value="{Binding DataModel.StreetWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="7" Style="{StaticResource WaferPropertyLabelStyle}" Text="间距Y" />
+                    <hc:NumericUpDown Grid.Row="7" Grid.Column="1" Style="{StaticResource WaferNumericStyle}" Minimum="0" Value="{Binding DataModel.StreetHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="8" Style="{StaticResource WaferPropertyLabelStyle}" Text="晶圆图" />
+                    <Button Grid.Row="8"
+                            Grid.Column="1"
+                            Content="刷新晶圆图"
+                            Command="{Binding RebuildMapCommand}"
+                            Style="{StaticResource WaferPropertyButtonStyle}" />
+                </Grid>
+            </Expander>
+
+            <Expander Header="运动" Style="{StaticResource WaferPropertyCategoryStyle}">
+                <Grid Style="{StaticResource WaferPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104" SharedSizeGroup="WaferPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource WaferPropertyLabelStyle}" Text="轴方向" />
+                    <ComboBox Grid.Row="0" Grid.Column="1" Style="{StaticResource WaferPropertyEditorComboBoxStyle}" ItemsSource="{Binding AxisOrientations}" SelectedItem="{Binding DataModel.AxisOrientation}" />
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource WaferPropertyLabelStyle}" Text="移动趋势" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource WaferPropertyEditorComboBoxStyle}" ItemsSource="{Binding MoveTrends}" SelectedItem="{Binding DataModel.MoveTrendMode}" />
+
+                    <TextBlock Grid.Row="2" Style="{StaticResource WaferPropertyLabelStyle}" Text="角点" />
+                    <UniformGrid Grid.Row="2" Grid.Column="1" Columns="2" Margin="0,2,6,2">
+                        <Button Content="左上" Command="{Binding SelectCornerCommand}" CommandParameter="LeftTop" Style="{StaticResource WaferDenseButtonStyle}" />
+                        <Button Content="右上" Command="{Binding SelectCornerCommand}" CommandParameter="RightTop" Style="{StaticResource WaferDenseButtonStyle}" />
+                        <Button Content="左下" Command="{Binding SelectCornerCommand}" CommandParameter="LeftBottom" Style="{StaticResource WaferDenseButtonStyle}" />
+                        <Button Content="右下" Command="{Binding SelectCornerCommand}" CommandParameter="RightBottom" Style="{StaticResource WaferDenseButtonStyle}" />
+                    </UniformGrid>
+                </Grid>
+            </Expander>
+
+            <Expander Header="跳点规则" Style="{StaticResource WaferPropertyCategoryStyle}">
+                <Grid Style="{StaticResource WaferPropertyPanelStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="104" SharedSizeGroup="WaferPropertyName" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Style="{StaticResource WaferPropertyLabelStyle}" Text="跳点数量" />
+                    <hc:NumericUpDown Grid.Row="0" Grid.Column="1" Style="{StaticResource WaferNumericStyle}" DecimalPlaces="0" Increment="1" Minimum="2" Value="{Binding SkipNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource WaferPropertyLabelStyle}" Text="偏移" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource WaferPropertyEditorComboBoxStyle}" ItemsSource="{Binding OffsetOptions}" SelectedItem="{Binding SelectedOffsetNum}" />
+
+                    <TextBlock Grid.Row="2" Style="{StaticResource WaferPropertyLabelStyle}" Text="跳点规则" />
+                    <Button Grid.Row="2" Grid.Column="1" Content="应用跳点规则" Command="{Binding ApplySkipRuleCommand}" Style="{StaticResource WaferPropertyButtonStyle}" />
+
+                </Grid>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

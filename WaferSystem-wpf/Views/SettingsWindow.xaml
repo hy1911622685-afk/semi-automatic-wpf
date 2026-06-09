@@ -1,0 +1,341 @@
+﻿<Window x:Class="WaferSystem.Wpf.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:comm="clr-namespace:Communication.Wpf.Views;assembly=Communication.Wpf"
+        xmlns:db="clr-namespace:MySqlLib.Wpf.Views;assembly=MySqlLib.Wpf"
+        xmlns:motion="clr-namespace:MotionCard.Wpf.Views;assembly=MotionCard.Wpf"
+        Title="系统设置"
+        Width="1160"
+        Height="880"
+        MinWidth="820"
+        MinHeight="620"
+        FontFamily="Microsoft YaHei UI"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        TextOptions.TextHintingMode="Fixed"
+        Background="{StaticResource SystemSurfaceBrush}"
+        WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <SolidColorBrush x:Key="SettingsTabSurfaceBrush" Color="#F3F6FA" />
+        <SolidColorBrush x:Key="SettingsTabPanelBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="SettingsTabHeaderBrush" Color="#F8FBFD" />
+        <SolidColorBrush x:Key="SettingsTabBorderBrush" Color="#DCE3EE" />
+        <SolidColorBrush x:Key="SettingsTabTextBrush" Color="#222A35" />
+        <SolidColorBrush x:Key="SettingsTabMutedTextBrush" Color="#667386" />
+        <SolidColorBrush x:Key="SettingsTabAccentBrush" Color="#1F7A8C" />
+        <SolidColorBrush x:Key="SettingsTabHoverBrush" Color="#EAF4F7" />
+        <SolidColorBrush x:Key="SettingsTabPressedBrush" Color="#D6EBF0" />
+        <SolidColorBrush x:Key="SettingsTabSelectedBrush" Color="#FFFFFF" />
+
+        <Style x:Key="SettingsWindowTabControlStyle"
+               TargetType="TabControl">
+            <Setter Property="Background" Value="{StaticResource SettingsTabPanelBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource SettingsTabBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid KeyboardNavigation.TabNavigation="Local"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0"
+                                    Padding="4"
+                                    Background="{StaticResource SettingsTabHeaderBrush}"
+                                    BorderBrush="{StaticResource SettingsTabBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="7">
+                                <TabPanel x:Name="HeaderPanel"
+                                          IsItemsHost="True"
+                                          KeyboardNavigation.TabIndex="1" />
+                            </Border>
+
+                            <Border Grid.Row="1"
+                                    Margin="0,10,0,0"
+                                    Padding="{TemplateBinding Padding}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="7">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="12"
+                                                      Direction="270"
+                                                      Opacity="0.07"
+                                                      ShadowDepth="1" />
+                                </Border.Effect>
+                                <ContentPresenter x:Name="PART_SelectedContentHost"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  ContentSource="SelectedContent"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SettingsWindowTabItemStyle"
+               TargetType="TabItem">
+            <Setter Property="MinWidth" Value="104" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Padding" Value="14,0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Foreground" Value="{StaticResource SettingsTabMutedTextBrush}" />
+            <Setter Property="FontFamily" Value="Microsoft YaHei UI" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid SnapsToDevicePixels="True">
+                            <Border x:Name="TabChrome"
+                                    Margin="2,1,8,1"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="0"
+                                    CornerRadius="5"
+                                    SnapsToDevicePixels="True">
+                                <Grid>
+                                    <ContentPresenter x:Name="ContentSite"
+                                                      Margin="{TemplateBinding Padding}"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      ContentSource="Header"
+                                                      RecognizesAccessKey="True"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    <Border x:Name="ActiveLine"
+                                            Height="3"
+                                            Margin="14,0,14,1"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Bottom"
+                                            Background="{StaticResource SettingsTabAccentBrush}"
+                                            CornerRadius="2"
+                                            Opacity="0" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabChrome" Property="Background" Value="{StaticResource SettingsTabHoverBrush}" />
+                                <Setter Property="Foreground" Value="{StaticResource SettingsTabTextBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabChrome" Property="Background" Value="Transparent" />
+                                <Setter TargetName="ActiveLine" Property="Opacity" Value="1" />
+                                <Setter Property="Foreground" Value="{StaticResource SettingsTabAccentBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" CornerRadius="8" >
+            <TabControl ItemContainerStyle="{StaticResource SettingsWindowTabItemStyle}"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Style="{StaticResource SettingsWindowTabControlStyle}">
+                <TabItem Header="配置"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+                        <ScrollViewer HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel 
+                                        HorizontalAlignment="Stretch">
+                                <Border Margin="0,0,0,10" Style="{StaticResource SystemCardStyle}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                               Grid.ColumnSpan="6"
+                                               Margin="0,0,0,10"
+                                               Style="{StaticResource SystemSectionTitleStyle}"
+                                               Text="运动参数" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SystemFieldLabelStyle}" Text="相机 X (mm)" IsEnabled="False"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CcdX, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="14,0,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="相机 Y" />
+                                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding CcdY, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="探针 X" />
+                                        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,8,0,0" Text="{Binding ProbeCenterX, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="2" Margin="14,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="探针 Y" />
+                                        <TextBox Grid.Row="2" Grid.Column="3" Margin="0,8,0,0" Text="{Binding ProbeCenterY, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="快速(mm/s)" />
+                                        <TextBox Grid.Row="3" Grid.Column="1" Margin="0,8,0,0" Text="{Binding XyFastSpeed, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="2" Margin="14,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="正常速度(mm/s)" />
+                                        <TextBox Grid.Row="3" Grid.Column="3" Margin="0,8,0,0" Text="{Binding XyNormalSpeed, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="慢速(mm/s)" />
+                                        <TextBox Grid.Row="4" Grid.Column="1" Margin="0,8,0,0" Text="{Binding XySlowSpeed, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="4" Grid.Column="2" Margin="14,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="回零速度(mm/s)" />
+                                        <TextBox Grid.Row="4" Grid.Column="3" Margin="0,8,0,0" Text="{Binding XyZeroSpeed, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                </Border>
+
+                                <Border Margin="0,0,0,10" Style="{StaticResource SystemCardStyle}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                               Grid.ColumnSpan="4"
+                                               Margin="0,0,0,10"
+                                               Style="{StaticResource SystemSectionTitleStyle}"
+                                               Text="Z 轴高度" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SystemFieldLabelStyle}" Text="安全高度(mm)" />
+                                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SafetyHeight, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="14,0,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="分离高度(mm)" />
+                                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SeparationHeight, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="接触高度(mm)" />
+                                        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,8,0,0" Text="{Binding ContactHeight, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                </Border>
+
+                                <Border Margin="0,0,0,10" Style="{StaticResource SystemCardStyle}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                               Grid.ColumnSpan="4"
+                                               Margin="0,0,0,10"
+                                               Style="{StaticResource SystemSectionTitleStyle}"
+                                               Text="视觉与晶圆图" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SystemFieldLabelStyle}" Text="X 标定比例" />
+                                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TransformerA11, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="14,0,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="Y 标定比例" />
+                                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding TransformerA22, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="标定匹配 %" />
+                                        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,8,0,0" Text="{Binding MatchScorePercent, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="2" Grid.Column="2" Margin="14,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="检测匹配 %" />
+                                        <TextBox Grid.Row="2" Grid.Column="3" Margin="0,8,0,0" Text="{Binding AoiMatchScorePercent, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="允许错误次数" />
+                                        <TextBox Grid.Row="3" Grid.Column="1" Margin="0,8,0,0" Text="{Binding AllowableErrorNumber, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="2" Margin="14,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="模板容差 %" />
+                                        <TextBox Grid.Row="3" Grid.Column="3" Margin="0,8,0,0" Text="{Binding ToleranceFactorPercent, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="AOI扫描X步进(mm)" />
+                                        <TextBox Grid.Row="4" Grid.Column="1" Margin="0,8,0,0" Text="{Binding ScanStepX, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Row="4" Grid.Column="2" Margin="14,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="AOI扫描Y步进(mm)" />
+                                        <TextBox Grid.Row="4" Grid.Column="3" Margin="0,8,0,0" Text="{Binding ScanStepY, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="0,8,6,0" Style="{StaticResource SystemFieldLabelStyle}" Text="Die扫描步进(mm)" />
+                                        <TextBox Grid.Row="5" Grid.Column="1" Margin="0,8,0,0" Text="{Binding DieDimensionScanStep, UpdateSourceTrigger=PropertyChanged}" ToolTip="扫描晶圆大小的移动步进"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+
+                <!--<TabItem Header="通讯"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+                        <comm:CommunicationView x:Name="CommunicationViewHost"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch" />
+                    </Grid>
+                </TabItem>-->
+
+                <!--<TabItem Header="IO监听"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+                        <motion:CtrlIOPortView HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch" />
+                    </Grid>
+                </TabItem>-->
+
+                <TabItem Header="数据库"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+                        <db:SQLiteToolView HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch" />
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Border>
+
+        <StackPanel Grid.Row="1"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button MinWidth="92"
+                    Click="Save_Click"
+                    Style="{StaticResource SystemPrimaryButtonStyle}"
+                    Content="保存" />
+            <Button MinWidth="92"
+                    Click="Cancel_Click"
+                    Content="取消" />
+        </StackPanel>
+    </Grid>
+</Window>

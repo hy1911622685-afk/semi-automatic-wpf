@@ -1,0 +1,53 @@
+<UserControl x:Class="WaferSystem.Wpf.Controls.WaveformDecoration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="130" d:DesignWidth="800"
+             Opacity="0.05">
+    <!-- 波形底部装饰 – 对应 React 的 WaveformSVG 组件 -->
+    <Viewbox Stretch="Fill">
+        <Canvas Width="800" Height="130">
+            <!-- 水平网格线 -->
+            <Line X1="0" Y1="0"   X2="800" Y2="0"   Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="0" Y1="20"  X2="800" Y2="20"  Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="0" Y1="40"  X2="800" Y2="40"  Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="0" Y1="60"  X2="800" Y2="60"  Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="0" Y1="80"  X2="800" Y2="80"  Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="0" Y1="100" X2="800" Y2="100" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="0" Y1="120" X2="800" Y2="120" Stroke="White" StrokeThickness="0.4"/>
+
+            <!-- 垂直网格线 -->
+            <Line X1="0"   Y1="0" X2="0"   Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="40"  Y1="0" X2="40"  Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="80"  Y1="0" X2="80"  Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="120" Y1="0" X2="120" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="160" Y1="0" X2="160" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="200" Y1="0" X2="200" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="240" Y1="0" X2="240" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="280" Y1="0" X2="280" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="320" Y1="0" X2="320" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="360" Y1="0" X2="360" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="400" Y1="0" X2="400" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="440" Y1="0" X2="440" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="480" Y1="0" X2="480" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="520" Y1="0" X2="520" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="560" Y1="0" X2="560" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="600" Y1="0" X2="600" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="640" Y1="0" X2="640" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="680" Y1="0" X2="680" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="720" Y1="0" X2="720" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="760" Y1="0" X2="760" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+            <Line X1="800" Y1="0" X2="800" Y2="130" Stroke="White" StrokeThickness="0.4"/>
+
+            <!-- 正弦波 (蓝色) -->
+            <Path Stroke="#3B82F6" StrokeThickness="1.8" Fill="Transparent"
+                  Data="M0,65 C40,15 80,15 120,65 C160,115 200,115 240,65 C280,15 320,15 360,65 C400,115 440,115 480,65 C520,15 560,15 600,65 C640,115 680,115 720,65 C760,15 800,15 840,65"/>
+
+            <!-- 方波 (青色) -->
+            <Path Stroke="#06B6D4" StrokeThickness="1" Fill="Transparent" Opacity="0.5"
+                  Data="M0,85 L60,85 L60,45 L120,45 L120,85 L180,85 L180,45 L240,45 L240,85 L300,85 L300,45 L360,45 L360,85 L420,85 L420,45 L480,45 L480,85 L540,85 L540,45 L600,45 L600,85 L660,85 L660,45 L720,45 L720,85 L780,85 L780,45 L840,45"/>
+        </Canvas>
+    </Viewbox>
+</UserControl>

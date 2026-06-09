@@ -1,0 +1,40 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+[Pp]ackages/
+TestResults/
+
+# .NET
+*.nupkg
+*.snupkg
+project.lock.json
+project.assets.json
+*.nuget.g.props
+*.nuget.g.targets
+*.nuget.dgspec.json
+
+# Logs and runtime data
+[Ll]og/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Local generated files
+*.cache
+*.tmp
+*.bak
+*.orig
+
+# Rider / ReSharper
+.idea/
+_ReSharper*/
+*.DotSettings.user
