@@ -11,6 +11,11 @@
     <PlatformTarget>x64</PlatformTarget>
     <ApplicationIcon>siradar32.ico</ApplicationIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ConfigFile\hikVision.sol" />
+    <None Remove="ConfigFile\mySqlite.db" />
+    <None Remove="ConfigFile\SystemSettings.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
@@ -32,6 +37,15 @@
     <Resource Include="Assets\bg.jpg" />
     <Content Include="..\轴错误停止原因.txt" Link="轴错误停止原因.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConfigFile\hikVision.sol">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConfigFile\mySqlite.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConfigFile\SystemSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="siradar32.ico" />
   </ItemGroup>

@@ -25,6 +25,7 @@ project.assets.json
 [Ll]og/
 *.log
 *.db
+!WaferSystem-wpf/ConfigFile/mySqlite.db
 *.sqlite
 *.sqlite3
 

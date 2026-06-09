@@ -1,0 +1,30 @@
+{
+  "Version": 1,
+  "Motion": {
+    "CcdX": 100.0,
+    "CcdY": 100.0,
+    "ProbeCenterX": 80.0,
+    "ProbeCenterY": 50.0,
+    "XyFastSpeed": 7.0,
+    "XyNormalSpeed": 2.0,
+    "XyZeroSpeed": 7.0,
+    "XySlowSpeed": 0.03,
+    "SafetyHeight": 0.0,
+    "SeparationHeight": 1.0,
+    "ContactHeight": 2.0
+  },
+  "Vision": {
+    "MatchScore": 0.65,
+    "AoiMatchScore": 0.55,
+    "AllowableErrorNumber": 2,
+    "OverlapRate": 0.1,
+    "TransformerA11": 465.5732,
+    "TransformerA22": -463.0055,
+    "ScanStepX": 5.0,
+    "ScanStepY": 3.0,
+    "DieDimensionScanStep": 0.05
+  },
+  "WaferMap": {
+    "ToleranceFactor": 0.3
+  }
+}
