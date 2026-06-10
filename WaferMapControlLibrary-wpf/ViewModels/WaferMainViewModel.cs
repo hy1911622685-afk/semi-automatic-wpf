@@ -2,9 +2,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScottPlot.WPF;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 using WaferMap.Wpf.Infrastructure;
 using WaferMap.Wpf.Model;
 
@@ -32,6 +35,8 @@ namespace WaferMap.Wpf.ViewModels
 
             RefreshOffsetOptions();
             RefreshBins();
+            AttachStatisticsSources();
+            RefreshTestStatistics();
         }
 
         public PlotHelper PlotHelper { get; }
@@ -52,6 +57,9 @@ namespace WaferMap.Wpf.ViewModels
 
         public ObservableCollection<BinDefinitionViewModel> BinDefinitions { get; } =
             new ObservableCollection<BinDefinitionViewModel>();
+
+        public ObservableCollection<BinTestStatisticViewModel> BinTestStatistics { get; } =
+            new ObservableCollection<BinTestStatisticViewModel>();
 
         public WaferDataModel DataModel => PlotHelper.DataModel;
 
@@ -110,10 +118,27 @@ namespace WaferMap.Wpf.ViewModels
         [ObservableProperty]
         private BinDefinitionViewModel selectedBinDefinition;
 
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(JoinedTestSummary))]
+        private int joinedTestCount;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(TestedSummary))]
+        private int testedCount;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(TestedSummary))]
+        private double testedPercentOfJoined;
+
+        [ObservableProperty]
+        private bool isGeneratingWaferMap;
+
         public bool IsMoveMode => OperationalMode == WaferMapOperationalEnum.Move;
         public bool IsSelectMode => OperationalMode == WaferMapOperationalEnum.SelectorDeselect;
         public bool IsAddMode => OperationalMode == WaferMapOperationalEnum.AddorRemove;
         public bool IsSyncEnabled => PlotHelper.IsSync;
+        public string JoinedTestSummary => $"{JoinedTestCount}";
+        public string TestedSummary => $"{TestedCount} ({TestedPercentOfJoined:F1}%)";
 
         public void ExitSyncState()
         {
@@ -179,6 +204,138 @@ namespace WaferMap.Wpf.ViewModels
                 : $"Selected Die #{selectedDie.Index} ({selectedDie.GridX}, {selectedDie.GridY}) {GetDieStateText(selectedDie)}";
         }
 
+        private void AttachStatisticsSources()
+        {
+            PlotHelper.DataModel.RefreshRequested -= HandleStatisticsRefreshRequested;
+            PlotHelper.DataModel.OnSingleDieChanged -= HandleStatisticsSingleDieChanged;
+            PlotHelper.DataModel.OnBatchUpdateCompleted -= HandleStatisticsBatchUpdateCompleted;
+
+            PlotHelper.DataModel.RefreshRequested += HandleStatisticsRefreshRequested;
+            PlotHelper.DataModel.OnSingleDieChanged += HandleStatisticsSingleDieChanged;
+            PlotHelper.DataModel.OnBatchUpdateCompleted += HandleStatisticsBatchUpdateCompleted;
+        }
+
+        private void HandleStatisticsRefreshRequested()
+        {
+            RefreshTestStatistics();
+        }
+
+        private void HandleStatisticsSingleDieChanged(DieModel die)
+        {
+            RefreshTestStatistics();
+        }
+
+        private void HandleStatisticsBatchUpdateCompleted()
+        {
+            RefreshTestStatistics();
+        }
+
+        public void RefreshTestStatistics()
+        {
+            var dispatcher = Application.Current?.Dispatcher;
+            if (dispatcher != null && !dispatcher.CheckAccess())
+            {
+                dispatcher.Invoke(RefreshTestStatisticsCore);
+                return;
+            }
+
+            RefreshTestStatisticsCore();
+        }
+
+        public void ApplyBinToDie(DieModel die, string binCommand)
+        {
+            if (die == null)
+                return;
+
+            var dispatcher = Application.Current?.Dispatcher;
+            if (dispatcher != null && !dispatcher.CheckAccess())
+            {
+                dispatcher.Invoke(() => ApplyBinToDie(die, binCommand));
+                return;
+            }
+
+            die.ApplyBin(binCommand);
+            PlotHelper.DataModel.UpdateDieState(die);
+            RefreshTestStatistics();
+        }
+
+        private void RefreshTestStatisticsCore()
+        {
+            var testDies = PlotHelper.DataModel.AllDies
+                .Where(d => d != null && d.IsInTestQueue)
+                .ToList();
+
+            JoinedTestCount = testDies.Count;
+
+            var testedDies = testDies
+                .Where(d => !string.IsNullOrWhiteSpace(d.BinCommand))
+                .ToList();
+
+            TestedCount = testedDies.Count;
+            TestedPercentOfJoined = Percent(TestedCount, JoinedTestCount);
+
+            var registeredBins = PlotHelper.DataModel.ColorManager
+                .GetStateDefinitions()
+                .Where(x => x != null && !string.IsNullOrWhiteSpace(x.BinCommand))
+                .Select(x => new
+                {
+                    Key = GetBinCommandKey(x.BinCommand),
+                    Definition = x
+                })
+                .GroupBy(x => x.Key, StringComparer.Ordinal)
+                .Select(g => g.First())
+                .ToList();
+
+            var testedCounts = testedDies
+                .GroupBy(d => GetBinCommandKey(d.BinCommand), StringComparer.Ordinal)
+                .ToDictionary(g => g.Key, g => g.Count(), StringComparer.Ordinal);
+
+            var statistics = registeredBins
+                .OrderBy(x => x.Key, StringComparer.Ordinal)
+                .Select(x =>
+                {
+                    int count = testedCounts.TryGetValue(x.Key, out int value) ? value : 0;
+                    testedCounts.Remove(x.Key);
+
+                    return new BinTestStatisticViewModel
+                    {
+                        BinCommand = x.Definition.BinCommand,
+                        Description = x.Definition.Description,
+                        Count = count,
+                        PercentOfTested = Percent(count, TestedCount),
+                        ColorBrush = ToBrush(x.Definition.Color)
+                    };
+                })
+                .ToList();
+
+            foreach (var item in testedCounts.OrderBy(x => x.Key, StringComparer.Ordinal))
+            {
+                statistics.Add(new BinTestStatisticViewModel
+                {
+                    BinCommand = item.Key,
+                    Count = item.Value,
+                    PercentOfTested = Percent(item.Value, TestedCount),
+                    ColorBrush = ToBrush(PlotHelper.DataModel.ColorManager.DefaultColor)
+                });
+            }
+
+            BinTestStatistics.Clear();
+            foreach (var item in statistics)
+            {
+                BinTestStatistics.Add(item);
+            }
+        }
+
+        private static double Percent(int count, int total)
+        {
+            return total == 0 ? 0 : count * 100.0 / total;
+        }
+
+        private static SolidColorBrush ToBrush(System.Drawing.Color color)
+        {
+            return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
+        }
+
         private static string GetDieStateText(DieModel die)
         {
             if (die == null)
@@ -203,6 +360,7 @@ namespace WaferMap.Wpf.ViewModels
             PlotHelper.RefreshMapFromData();
             RefreshOffsetOptions();
             RefreshBins();
+            RefreshTestStatistics();
             OnPropertyChanged(nameof(DataModel));
         }
 
@@ -213,9 +371,24 @@ namespace WaferMap.Wpf.ViewModels
         }
 
         [RelayCommand]
-        private void RebuildMap()
+        private async Task RebuildMap()
         {
-            PlotHelper.RebuildMap();
+            if (IsGeneratingWaferMap)
+                return;
+
+            IsGeneratingWaferMap = true;
+            try
+            {
+                await Application.Current.Dispatcher.InvokeAsync(
+                    () => { },
+                    System.Windows.Threading.DispatcherPriority.Render);
+
+                PlotHelper.RebuildMap();
+            }
+            finally
+            {
+                IsGeneratingWaferMap = false;
+            }
         }
 
         [RelayCommand]
@@ -248,18 +421,21 @@ namespace WaferMap.Wpf.ViewModels
         private void SelectAll()
         {
             PlotHelper.SelectAllForTest();
+            RefreshTestStatistics();
         }
 
         [RelayCommand]
         private void SelectWithoutEdge()
         {
             PlotHelper.SelectNonEdgeForTest();
+            RefreshTestStatistics();
         }
 
         [RelayCommand]
         private void ClearSelection()
         {
             PlotHelper.ClearTestQueue();
+            RefreshTestStatistics();
         }
 
         [RelayCommand]
@@ -298,6 +474,7 @@ namespace WaferMap.Wpf.ViewModels
             }
 
             PlotHelper.RecalculateDieIndexes();
+            RefreshTestStatistics();
         }
 
         [RelayCommand]
@@ -367,6 +544,9 @@ namespace WaferMap.Wpf.ViewModels
         [RelayCommand]
         private void AddBin()
         {
+            if (!TrySelectEmptyBinCommand())
+                return;
+
             int commandNumber = GetNextBinCommandNumber();
             var vm = new BinDefinitionViewModel
             {
@@ -395,32 +575,12 @@ namespace WaferMap.Wpf.ViewModels
         [RelayCommand]
         private void SaveBins()
         {
-            NormalizeBinDefinitions();
+            TrimBinDescriptions();
 
-            var invalid = BinDefinitions.FirstOrDefault(x => string.IsNullOrWhiteSpace(x.BinCommand));
-            if (invalid != null)
-            {
-                SelectedBinDefinition = invalid;
-                return;
-            }
-
-            var duplicateCommand = BinDefinitions
-                .GroupBy(x => x.BinCommand?.Trim(), StringComparer.OrdinalIgnoreCase)
-                .FirstOrDefault(g => !string.IsNullOrWhiteSpace(g.Key) && g.Count() > 1);
-            if (duplicateCommand != null)
+            if (!TryValidateBinDefinitions())
                 return;
 
-            var customDefinitions = BinDefinitions
-                .Where(x => !x.IsSystemDefault)
-                .Select(item => new BinDefinition
-                {
-                    BinCommand = item.BinCommand,
-                    Description = item.Description,
-                    Color = item.GetColorOrDefault(PlotHelper.DataModel.ColorManager.DefaultColor),
-                    IsSystemDefault = false
-                });
-
-            PlotHelper.DataModel.ColorManager.SyncCustomStates(customDefinitions);
+            PlotHelper.DataModel.ColorManager.SyncCustomStates(CreateCustomBinDefinitions());
             RefreshBins();
             PlotHelper.DataModel.RefreshPlot();
         }
@@ -458,13 +618,54 @@ namespace WaferMap.Wpf.ViewModels
             RefreshBinDisplayIndexes();
         }
 
-        private void NormalizeBinDefinitions()
+        private void TrimBinDescriptions()
         {
             foreach (var item in BinDefinitions)
             {
-                item.BinCommand = item.BinCommand?.Trim();
                 item.Description = item.Description?.Trim();
             }
+        }
+
+        private bool TryValidateBinDefinitions()
+        {
+            if (!TrySelectEmptyBinCommand())
+                return false;
+
+            var usedCommands = new HashSet<string>(StringComparer.Ordinal);
+
+            foreach (var item in BinDefinitions)
+            {
+                if (!usedCommands.Add(GetBinCommandKey(item.BinCommand)))
+                {
+                    SelectedBinDefinition = item;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool TrySelectEmptyBinCommand()
+        {
+            var invalid = BinDefinitions.FirstOrDefault(x => string.IsNullOrWhiteSpace(x.BinCommand));
+            if (invalid == null)
+                return true;
+
+            SelectedBinDefinition = invalid;
+            return false;
+        }
+
+        private IEnumerable<BinDefinition> CreateCustomBinDefinitions()
+        {
+            return BinDefinitions
+                .Where(x => !x.IsSystemDefault)
+                .Select(item => new BinDefinition
+                {
+                    BinCommand = GetBinCommandKey(item.BinCommand),
+                    Description = item.Description,
+                    Color = item.GetColorOrDefault(PlotHelper.DataModel.ColorManager.DefaultColor),
+                    IsSystemDefault = false
+                });
         }
 
         private void RefreshBinDisplayIndexes()
@@ -478,8 +679,8 @@ namespace WaferMap.Wpf.ViewModels
         private int GetNextBinCommandNumber()
         {
             var usedNumbers = BinDefinitions
-                .Select(x => x.BinCommand?.Trim())
-                .Where(x => x != null && x.StartsWith("Bin", StringComparison.OrdinalIgnoreCase))
+                .Select(x => GetBinCommandKey(x.BinCommand))
+                .Where(x => x != null && x.StartsWith("Bin", StringComparison.Ordinal))
                 .Select(x => int.TryParse(x.Substring(3), out int number) ? number : 0)
                 .Where(x => x > 0)
                 .ToHashSet();
@@ -492,5 +693,7 @@ namespace WaferMap.Wpf.ViewModels
 
             return number;
         }
+
+        private static string GetBinCommandKey(string binCommand) => binCommand?.Trim() ?? string.Empty;
     }
 }

@@ -1,6 +1,7 @@
 <UserControl x:Class="WaferMap.Wpf.Views.BinsConfigView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:WaferMap.Wpf.Controls"
              xmlns:hc="https://handyorg.github.io/handycontrol">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -137,7 +138,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="10" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="188" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -159,17 +160,18 @@
 
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150" />
-                                <ColumnDefinition Width="12" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="112" />
                             </Grid.ColumnDefinitions>
-                            <hc:ColorPicker Grid.Column="0"
-                                            Height="34"
-                                            HorizontalAlignment="Stretch"
-                                            SelectedBrush="{Binding SelectedBinDefinition.ColorBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <controls:HsvColorPicker Grid.Column="0"
+                                                     HorizontalAlignment="Stretch"
+                                                     VerticalAlignment="Stretch"
+                                                     SelectedBrush="{Binding SelectedBinDefinition.ColorBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBox Grid.Column="2"
                                      MinWidth="112"
                                      Height="34"
+                                     VerticalAlignment="Bottom"
                                      Text="{Binding SelectedBinDefinition.ColorHex, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
 

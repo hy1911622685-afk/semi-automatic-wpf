@@ -524,6 +524,115 @@
                     </Border.Style>
                 </Border>
 
+                <Border Width="320"
+                        MaxHeight="260"
+                        Margin="8,0,0,8"
+                        Padding="10,8"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Background="{StaticResource SystemPanelBrush}"
+                        BorderBrush="{StaticResource SystemBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        IsHitTestVisible="False"
+                        Panel.ZIndex="{Binding VisionViewZIndex}">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="16"
+                                          Direction="270"
+                                          Opacity="0.16"
+                                          ShadowDepth="4" />
+                    </Border.Effect>
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsVisionWorkbenchMini}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="6" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="6" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource SystemTitleBrush}"
+                                       Text="测试统计" />
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Foreground="{StaticResource SystemMutedTextBrush}"
+                                           Text="加入测试" />
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="1"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource SystemTitleBrush}"
+                                           Text="{Binding WaferViewModel.JoinedTestSummary}" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0,3,0,0"
+                                           Foreground="{StaticResource SystemMutedTextBrush}"
+                                           Text="已测试" />
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           Margin="0,3,0,0"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource SystemTitleBrush}"
+                                           Text="{Binding WaferViewModel.TestedSummary}" />
+                            </Grid>
+
+                            <ItemsControl Grid.Row="4"
+                                          ItemsSource="{Binding WaferViewModel.BinTestStatistics}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,2,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Width="10"
+                                                    Height="10"
+                                                    Margin="0,0,6,0"
+                                                    VerticalAlignment="Center"
+                                                    Background="{Binding ColorBrush}"
+                                                    BorderBrush="{StaticResource SystemBorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="2" />
+                                            <TextBlock Grid.Column="1"
+                                                       Foreground="{StaticResource SystemTitleBrush}"
+                                                       Text="{Binding DisplayName}"
+                                                       TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Grid.Column="2"
+                                                       Margin="8,0,0,0"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource SystemTitleBrush}"
+                                                       Text="{Binding SummaryText}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                </Border>
+
 
             </Grid>
 
@@ -627,6 +736,9 @@
                             <DataTrigger Binding="{Binding MotionViewModel.IsInitializing}" Value="True">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding WaferViewModel.IsGeneratingWaferMap}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
@@ -704,6 +816,28 @@
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding IsStartupLoading}" Value="False" />
                                                 <Condition Binding="{Binding MotionViewModel.IsInitializing}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Margin="0,16,0,0"
+                                   HorizontalAlignment="Center"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource SystemTitleBrush}"
+                                   Text="正在生成晶圆图">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsStartupLoading}" Value="False" />
+                                                <Condition Binding="{Binding MotionViewModel.IsInitializing}" Value="False" />
+                                                <Condition Binding="{Binding WaferViewModel.IsGeneratingWaferMap}" Value="True" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Visibility" Value="Visible" />
                                         </MultiDataTrigger>

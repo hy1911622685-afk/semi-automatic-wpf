@@ -7,7 +7,6 @@ namespace WaferMap.Wpf.Model
     /// </summary>
     public class DieModel
     {
-        private const StringComparison BinComparison = StringComparison.OrdinalIgnoreCase;
         private DieAttributes attrs = DieAttributes.IsEnabled;
         private bool isSelectedForTest;
         private string binCommand;
@@ -43,7 +42,7 @@ namespace WaferMap.Wpf.Model
         {
             get => IsEnabled ? binCommand : null;
             set => binCommand = IsEnabled && !string.IsNullOrWhiteSpace(value)
-                ? value.Trim()
+                ? value
                 : null;
         }
 
@@ -125,7 +124,7 @@ namespace WaferMap.Wpf.Model
         /// </summary>
         public void ApplyBin(string binCommand)
         {
-            BinCommand = string.IsNullOrWhiteSpace(binCommand) ? null : binCommand.Trim();
+            BinCommand = string.IsNullOrWhiteSpace(binCommand) ? null : binCommand;
         }
 
         private void ClearEnabledOnlyState()
@@ -134,13 +133,5 @@ namespace WaferMap.Wpf.Model
             binCommand = null;
         }
 
-        /// <summary>
-        /// 判断是否属于指定 Bin；忽略大小写以兼容界面和通讯输入。
-        /// </summary>
-        public bool IsInBin(string binCommand)
-        {
-            return HasBin &&
-                   string.Equals(BinCommand, binCommand, BinComparison);
-        }
     }
 }

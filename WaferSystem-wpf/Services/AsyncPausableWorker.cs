@@ -185,10 +185,9 @@ namespace WaferSystem.Wpf.Services
             var currentDie = _waferViewModel.PlotHelper.DataModel.SelectedDie;
             if (currentDie != null)
             {
-                currentDie.ApplyBin(iteration % 5 != 0
+                _waferViewModel.ApplyBinToDie(currentDie, iteration % 5 != 0
                     ? ColorManager.PassedBinCommand
                     : ColorManager.FailedBinCommand);
-                _waferViewModel.DataModel.UpdateDieState(currentDie);
             }
 
             OnLogMessage($"完成第 {iteration} 个晶粒的测试");

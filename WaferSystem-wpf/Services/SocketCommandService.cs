@@ -258,8 +258,7 @@ namespace WaferSystem.Wpf.Services
                 if (currentDie == null)
                     return new[] { "False", "-1002" };
 
-                currentDie.ApplyBin(binCommand);
-                plotHelper.DataModel.UpdateDieState(currentDie);
+                _waferViewModel.ApplyBinToDie(currentDie, binCommand);
                 return new[] { "OK", "0" };
             });
         }
