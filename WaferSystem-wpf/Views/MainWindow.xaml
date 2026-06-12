@@ -16,6 +16,10 @@
         WindowStyle="None"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
         mc:Ignorable="d">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="60"
@@ -46,9 +50,11 @@
                 <Setter Property="BorderThickness" Value="1" />
                 <Setter Property="Foreground" Value="White" />
                 <Setter Property="FontFamily" Value="Microsoft YaHei UI" />
-                <Setter Property="FontSize" Value="13.5" />
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontWeight" Value="ExtraBold" />
                 <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="UseLayoutRounding" Value="True" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -58,16 +64,10 @@
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="5"
                                     SnapsToDevicePixels="True">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="8"
-                                                      Direction="270"
-                                                      Opacity="0.28"
-                                                      ShadowDepth="1"
-                                                      Color="#991B1B" />
-                                </Border.Effect>
                                 <ContentPresenter Margin="{TemplateBinding Padding}"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
@@ -200,27 +200,35 @@
                                 VerticalAlignment="Center">
                             <Button Command="{Binding StopAllAxesCommand}"
                                     shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                                    Style="{StaticResource SystemTitleBarStopButtonStyle}"
-                                    ToolTip="停止所有轴运动">
-                                <StackPanel Orientation="Horizontal">
+                                Style="{StaticResource SystemTitleBarStopButtonStyle}"
+                                ToolTip="停止所有轴运动">
+                                <StackPanel Orientation="Horizontal"
+                                            SnapsToDevicePixels="True"
+                                            UseLayoutRounding="True">
                                     <Grid Width="16"
                                           Height="16"
                                           Margin="0,0,8,0"
-                                          VerticalAlignment="Center">
+                                          VerticalAlignment="Center"
+                                          SnapsToDevicePixels="True"
+                                          UseLayoutRounding="True">
                                         <Border Background="#33FFFFFF"
                                                 BorderBrush="#88FFFFFF"
                                                 BorderThickness="1"
-                                                CornerRadius="3" />
-                                        <Rectangle Width="7"
-                                                   Height="7"
+                                                CornerRadius="3"
+                                                SnapsToDevicePixels="True" />
+                                        <Rectangle Width="8"
+                                                   Height="8"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                                                    RadiusX="1"
-                                                   RadiusY="1" />
+                                                   RadiusY="1"
+                                                   SnapsToDevicePixels="True" />
                                     </Grid>
                                     <TextBlock VerticalAlignment="Center"
-                                               FontWeight="ExtraBold"
+                                               SnapsToDevicePixels="True"
+                                               TextOptions.TextFormattingMode="Display"
+                                               TextOptions.TextRenderingMode="ClearType"
                                                Text="停止" />
                                 </StackPanel>
                             </Button>

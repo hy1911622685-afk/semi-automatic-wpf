@@ -595,7 +595,7 @@ namespace WaferSystem.Wpf.ViewModels
 
             string message =
                 "检测到Z轴当前处于扎针危险高度，本次XY/T移动已取消。\r\n" +
-                "请先移动到安全高度。\r\n\r\n" +
+                "取消或关闭不执行任何动作；点击确定仅移动Z轴到安全高度。\r\n\r\n" +
                 $"当前Z高度：{request.CurrentZHeight:F3}\r\n" +
                 $"扎针高度：{request.ContactHeight:F3}\r\n" +
                 $"安全高度：{request.SafetyHeight:F3}";
